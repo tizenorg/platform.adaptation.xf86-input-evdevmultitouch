@@ -1,0 +1,6 @@
+sdkdir=@sdkdir@
+
+Name: xorg-evdev-multitouch
+Description: X.Org evdev multitouch input driver.
+Version: @PACKAGE_VERSION@
+Cflags: -I${sdkdir}

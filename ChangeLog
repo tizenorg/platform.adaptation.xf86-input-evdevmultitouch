@@ -1,0 +1,6 @@
+[Title] SEL Verification - Fix a bug that causes SEGV when X server tries to remove a multitouch device
+[Issue#] S1-7024
+[Problem] A segmentation fault was made when X server tries to remove a multitouch device.
+[Cause] X multitouch driver tries to free a pointer(device name) which was not allocated by malloc.
+[Solution] Allocate a pointer by malloc() for the device name.
+[SCMRequest] N/A

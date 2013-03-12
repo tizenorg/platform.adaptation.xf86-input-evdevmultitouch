@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- this is probably a bit imprecise -->
+<deviceinfo version="0.2">
+  <device>
+    <match key="info.product" contains="Logitech Optical USB Mouse">
+      <match key="info.category" contains="input">
+        <match key="info.capabilities" contains="input.mouse">
+            <merge key="input.x11_driver" type="string">evdevmultitouchmultitouch</merge>
+        </match>
+      </match>
+    </match>
+  </device>
+</deviceinfo>
