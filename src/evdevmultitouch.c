@@ -203,7 +203,7 @@ static InputInfoPtr pCreatorInfo = NULL;
 /* All devices the evdevmultitouch driver has allocated and knows about.
  * MAXDEVICES is safe as null-terminated array, as two devices (VCP and VCK)
  * cannot be used by evdevmultitouch, leaving us with a space of 2 at the end. */
-static EvdevMultitouchPtr evdevmultitouch_devices[MAXDEVICES] = {NULL};
+static EvdevMultitouchPtr evdevmultitouch_devices[MAXDEVICES] = {NULL,};
 
 static size_t EvdevMultitouchCountBits(unsigned long *array, size_t nlongs)
 {

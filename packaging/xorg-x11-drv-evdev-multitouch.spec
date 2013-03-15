@@ -2,7 +2,7 @@
 Name:	xorg-x11-drv-evdev-multitouch
 Summary:    X.Org evdev multitouch input driver.
 Version: 2.3.2
-Release:    2
+Release:    4
 Group:      TO_BE/FILLED_IN
 License:    TO BE FILLED IN
 Source0:    %{name}-%{version}.tar.gz
