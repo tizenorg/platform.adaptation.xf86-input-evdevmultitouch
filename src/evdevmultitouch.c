@@ -99,6 +99,8 @@
 #define False FALSE
 #endif
 
+#define MAX_MT	10
+
 #define POLL_DISABLE	'0'
 #define POLL_ENABLE		'1'
 #define POLL_REQUEST	'2'
@@ -203,7 +205,7 @@ static InputInfoPtr pCreatorInfo = NULL;
 /* All devices the evdevmultitouch driver has allocated and knows about.
  * MAXDEVICES is safe as null-terminated array, as two devices (VCP and VCK)
  * cannot be used by evdevmultitouch, leaving us with a space of 2 at the end. */
-static EvdevMultitouchPtr evdevmultitouch_devices[MAXDEVICES] = {NULL,};
+static EvdevMultitouchPtr evdevmultitouch_devices[MAX_MT] = {NULL,};
 
 static size_t EvdevMultitouchCountBits(unsigned long *array, size_t nlongs)
 {
@@ -250,18 +252,22 @@ EvdevMultitouchIsCoreDevice(InputInfoPtr pInfo) {
 static BOOL
 EvdevMultitouchIsDuplicate(InputInfoPtr pInfo)
 {
+    int i;
     EvdevMultitouchPtr pEvdevMultitouch = pInfo->private;
-    EvdevMultitouchPtr* dev   = evdevmultitouch_devices;
+    EvdevMultitouchPtr dev;
 
-    if (pEvdevMultitouch->min_maj)
+    if (pEvdevMultitouch->min_maj && dev)
     {
-        while(*dev)
+        for(i = 0 ; i < MAX_MT ; i++)
         {
-            if ((*dev) != pEvdevMultitouch &&
-                (*dev)->min_maj &&
-                (*dev)->min_maj == pEvdevMultitouch->min_maj)
-                return TRUE;
-            dev++;
+        	dev = evdevmultitouch_devices[i];
+        	if(dev)
+    		{
+			if ((dev) != pEvdevMultitouch &&
+			     (dev)->min_maj &&
+			     (dev)->min_maj == pEvdevMultitouch->min_maj)
+				return TRUE;
+    		}
         }
     }
     return FALSE;
@@ -273,13 +279,19 @@ EvdevMultitouchIsDuplicate(InputInfoPtr pInfo)
 static void
 EvdevMultitouchAddDevice(InputInfoPtr pInfo)
 {
+    int i;
     EvdevMultitouchPtr pEvdevMultitouch = pInfo->private;
-    EvdevMultitouchPtr* dev = evdevmultitouch_devices;
+    EvdevMultitouchPtr dev;
 
-    while(*dev)
-        dev++;
-
-    *dev = pEvdevMultitouch;
+    for(i = 0 ; i < MAX_MT ; i++)
+    {
+    	dev = evdevmultitouch_devices[i];
+	if(!dev)
+	{
+		evdevmultitouch_devices[i] = pEvdevMultitouch;
+		return;
+	}
+    }
 }
 
 /**
@@ -288,20 +300,18 @@ EvdevMultitouchAddDevice(InputInfoPtr pInfo)
 static void
 EvdevMultitouchRemoveDevice(InputInfoPtr pInfo)
 {
+    int i;
     EvdevMultitouchPtr pEvdevMultitouch = pInfo->private;
-    EvdevMultitouchPtr *dev   = evdevmultitouch_devices;
-    int count       = 0;
+    EvdevMultitouchPtr dev;
 
-    while(*dev)
+    for( i = 0 ; i < MAX_MT ; i++ )
     {
-        count++;
-        if (*dev == pEvdevMultitouch)
-        {
-            memmove(dev, dev + 1,
-                    sizeof(evdevmultitouch_devices) - (count * sizeof(EvdevMultitouchPtr)));
-            break;
-        }
-        dev++;
+    	dev = evdevmultitouch_devices[i];
+	if((dev) && (dev == pEvdevMultitouch))
+	{
+		evdevmultitouch_devices[i] = NULL;
+		break;
+	}
     }
 }
 
@@ -2969,6 +2979,7 @@ EvdevMultitouchPreInit(InputDriverPtr drv, InputInfoPtr pInfo, int flags)
         goto error;
 
     pInfo->private = pEvdevMultitouch;
+    memset(evdevmultitouch_devices, 0, sizeof(EvdevMultitouchPtr) * MAX_MT);
 
     xf86CollectInputOptions(pInfo, evdevmultitouchDefaults);
     xf86ProcessCommonOptions(pInfo, pInfo->options);
