@@ -256,7 +256,7 @@ EvdevMultitouchIsDuplicate(InputInfoPtr pInfo)
     EvdevMultitouchPtr pEvdevMultitouch = pInfo->private;
     EvdevMultitouchPtr dev;
 
-    if (pEvdevMultitouch->min_maj && dev)
+    if (pEvdevMultitouch->min_maj)
     {
         for(i = 0 ; i < MAX_MT ; i++)
         {
