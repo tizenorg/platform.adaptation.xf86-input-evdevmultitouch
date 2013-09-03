@@ -1,5 +1,5 @@
 #sbs-git:slp/pkgs/xorg/driver/xserver-xorg-input-evdev-multitouch xserver-xorg-input-evdev-multitouch 2.3.2 b89f300e6969a0b8cef3bbe5720ec5300baf4ad3
-Name:	xorg-x11-drv-evdev-multitouch
+Name:	xf86-input-evdevmultitouch
 Summary:    X.Org evdev multitouch input driver.
 Version: 2.3.4
 Release:    4
