@@ -1,3 +1,5 @@
+%bcond_with x
+
 #sbs-git:slp/pkgs/xorg/driver/xserver-xorg-input-evdev-multitouch xserver-xorg-input-evdev-multitouch 2.3.2 b89f300e6969a0b8cef3bbe5720ec5300baf4ad3
 Name:	xf86-input-evdevmultitouch
 Summary:    X.Org evdev multitouch input driver.
@@ -14,6 +16,10 @@ BuildRequires:  pkgconfig(inputproto)
 BuildRequires:  pkgconfig(kbproto)
 BuildRequires:  pkgconfig(resourceproto)
 BuildRequires:  pkgconfig(xkbfile)
+
+%if !%{with x}
+ExclusiveArch:
+%endif
 
 %description
 X.Org X server -- evdev input multitouch driver This package provides the driver for input devices using evdev, the Linux
