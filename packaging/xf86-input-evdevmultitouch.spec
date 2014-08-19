@@ -60,11 +60,11 @@ cp -af COPYING %{buildroot}/usr/share/license/%{name}
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/xorg/modules/input/evdevmultitouch_drv.so
+%{_libdir}/xorg/modules/input/evdevmultitouch_drv.so
 /usr/share/license/%{name}
 
 %files devel
 %defattr(-,root,root,-)
-/usr/include/xorg/evdevmultitouch-properties.h
-/usr/lib/pkgconfig/xorg-evdev-multitouch.pc
+%{_includedir}/xorg/evdevmultitouch-properties.h
+%{_libdir}/pkgconfig/xorg-evdev-multitouch.pc
 /usr/share/man/man4/evdevmultitouch.4.gz
